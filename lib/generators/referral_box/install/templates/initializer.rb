@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-LoyaltyRef.configure do |config|
+ReferralBox.configure do |config|
   # Define which model represents your app's user/customer
   config.reference_class_name = 'User' # or 'Customer', 'Account', etc.
 
@@ -38,8 +38,8 @@ LoyaltyRef.configure do |config|
 
   # Referral reward logic
   config.referral_reward = ->(referrer, referee) do
-    LoyaltyRef.earn_points(referrer, 100)
-    LoyaltyRef.earn_points(referee, 50)
+    ReferralBox.earn_points(referrer, 100)
+    ReferralBox.earn_points(referee, 50)
   end
 
   # Points expiration (in days)
@@ -49,7 +49,7 @@ LoyaltyRef.configure do |config|
   config.referral_code_length = 8
 
   # Admin dashboard route path
-  config.admin_route_path = "/loyalty"
+  config.admin_route_path = "/referral_box"
 
   # Device tracking and analytics
   config.enable_device_tracking = true  # Enable device detection

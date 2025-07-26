@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-module LoyaltyRef
+module ReferralBox
   class ReferralLog < ActiveRecord::Base
-    self.table_name = "loyalty_ref_referral_logs"
+    self.table_name = "referral_box_referral_logs"
 
     belongs_to :referee, polymorphic: true, optional: true
 

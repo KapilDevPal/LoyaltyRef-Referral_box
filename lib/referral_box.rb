@@ -5,13 +5,13 @@ require "active_record"
 require "action_view"
 require "action_pack"
 
-require_relative "loyalty_ref/version"
-require_relative "loyalty_ref/engine"
-require_relative "loyalty_ref/configuration"
-require_relative "loyalty_ref/models/transaction"
-require_relative "loyalty_ref/models/referral_log"
+require_relative "referral_box/version"
+require_relative "referral_box/engine"
+require_relative "referral_box/configuration"
+require_relative "referral_box/models/transaction"
+require_relative "referral_box/models/referral_log"
 
-module LoyaltyRef
+module ReferralBox
   class << self
     def configure
       yield configuration
@@ -47,7 +47,7 @@ module LoyaltyRef
 
       transaction
     rescue => e
-      Rails.logger.error "LoyaltyRef: Failed to earn points: #{e.message}"
+      Rails.logger.error "ReferralBox: Failed to earn points: #{e.message}"
       false
     end
 
@@ -75,7 +75,7 @@ module LoyaltyRef
 
       transaction
     rescue => e
-      Rails.logger.error "LoyaltyRef: Failed to redeem points: #{e.message}"
+      Rails.logger.error "ReferralBox: Failed to redeem points: #{e.message}"
       false
     end
 
@@ -122,7 +122,7 @@ module LoyaltyRef
         device_data: device_info
       )
     rescue => e
-      Rails.logger.error "LoyaltyRef: Failed to track referral: #{e.message}"
+      Rails.logger.error "ReferralBox: Failed to track referral: #{e.message}"
       false
     end
 
@@ -157,7 +157,7 @@ module LoyaltyRef
 
       true
     rescue => e
-      Rails.logger.error "LoyaltyRef: Failed to process referral signup: #{e.message}"
+      Rails.logger.error "ReferralBox: Failed to process referral signup: #{e.message}"
       false
     end
 
@@ -184,7 +184,7 @@ module LoyaltyRef
       user_class = configuration.reference_class_name.constantize
       user_class.find_by(referral_code: code)
     rescue NameError
-      Rails.logger.error "LoyaltyRef: User class '#{configuration.reference_class_name}' not found"
+      Rails.logger.error "ReferralBox: User class '#{configuration.reference_class_name}' not found"
       nil
     end
   end

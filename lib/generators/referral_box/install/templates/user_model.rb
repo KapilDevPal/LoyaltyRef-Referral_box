@@ -1,4 +1,4 @@
- # frozen_string_literal: true
+# frozen_string_literal: true
 
 class User < ApplicationRecord
   # Add these columns to your users table:
@@ -6,18 +6,18 @@ class User < ApplicationRecord
   # add_column :users, :tier, :string
   # add_index :users, :referral_code, unique: true
 
-  has_many :loyalty_ref_transactions, class_name: 'LoyaltyRef::Transaction', as: :user
+  has_many :referral_box_transactions, class_name: 'ReferralBox::Transaction', as: :user
   has_many :referrals, class_name: 'User', foreign_key: 'referrer_id'
   belongs_to :referrer, class_name: 'User', optional: true
 
   before_create :generate_referral_code
 
   def points_balance
-    LoyaltyRef.balance(self)
+    ReferralBox.balance(self)
   end
 
   def current_tier
-    LoyaltyRef.tier(self)
+    ReferralBox.tier(self)
   end
 
   def referral_link
@@ -29,7 +29,7 @@ class User < ApplicationRecord
   end
 
   def successful_referrals
-    referrals.joins(:loyalty_ref_transactions).distinct.count
+    referrals.joins(:referral_box_transactions).distinct.count
   end
 
   private
@@ -38,7 +38,7 @@ class User < ApplicationRecord
     return if referral_code.present?
 
     loop do
-      self.referral_code = SecureRandom.alphanumeric(LoyaltyRef.configuration.referral_code_length).upcase
+      self.referral_code = SecureRandom.alphanumeric(ReferralBox.configuration.referral_code_length).upcase
       break unless User.exists?(referral_code: referral_code)
     end
   end

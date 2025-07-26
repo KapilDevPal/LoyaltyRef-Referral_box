@@ -1,4 +1,4 @@
- # LoyaltyRef 💎
+# ReferralBox 📦
 
 A flexible Ruby gem for building loyalty and referral systems in Rails apps.
 
@@ -23,12 +23,12 @@ A flexible Ruby gem for building loyalty and referral systems in Rails apps.
 
 ```ruby
 # Gemfile
-gem 'loyalty_ref'
+gem 'referral_box'
 ```
 
 ```bash
 $ bundle install
-$ rails generate loyalty_ref:install
+$ rails generate referral_box:install
 $ rails db:migrate
 ```
 
@@ -39,9 +39,9 @@ $ rails db:migrate
 Create your configuration block in an initializer:
 
 ```ruby
-# config/initializers/loyalty_ref.rb
+# config/initializers/referral_box.rb
 
-LoyaltyRef.configure do |config|
+ReferralBox.configure do |config|
   # Define which model represents your app's user/customer
   config.reference_class_name = 'User' # or 'Customer', 'Account', etc.
 
@@ -70,8 +70,8 @@ LoyaltyRef.configure do |config|
   end
 
   config.referral_reward = ->(referrer, referee) do
-    LoyaltyRef.earn_points(referrer, 100)
-    LoyaltyRef.earn_points(referee, 50)
+    ReferralBox.earn_points(referrer, 100)
+    ReferralBox.earn_points(referee, 50)
   end
 end
 ```
@@ -123,7 +123,7 @@ end
 ### 🖥️ Admin UI
 
 * Mountable engine with ERB templates
-* Routes like `/loyalty`
+* Routes like `/referral_box`
 * Views to list users, transactions, referrals
 
 ---
@@ -150,8 +150,8 @@ end
 
 ```
 lib/
-├── loyalty_ref.rb
-├── loyalty_ref/
+├── referral_box.rb
+├── referral_box/
 │   ├── engine.rb
 │   ├── configuration.rb
 │   ├── version.rb
@@ -160,7 +160,7 @@ lib/
 │   │   ├── referral_log.rb
 │   └── controllers/
 │       ├── dashboard_controller.rb
-app/views/loyalty_ref/dashboard/
+app/views/referral_box/dashboard/
   ├── index.html.erb
   ├── show.html.erb
 ```
@@ -171,16 +171,16 @@ app/views/loyalty_ref/dashboard/
 
 ```ruby
 # Earn points
-LoyaltyRef.earn_points(current_user, event: order)
+ReferralBox.earn_points(current_user, event: order)
 
 # Redeem points
-LoyaltyRef.redeem_points(current_user, offer: coupon)
+ReferralBox.redeem_points(current_user, offer: coupon)
 
 # Check balance
-LoyaltyRef.balance(current_user)
+ReferralBox.balance(current_user)
 
 # Track referral
-LoyaltyRef.track_referral(ref_code: params[:ref])
+ReferralBox.track_referral(ref_code: params[:ref])
 ```
 
 ---

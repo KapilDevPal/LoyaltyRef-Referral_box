@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-module LoyaltyRef
+module ReferralBox
   module DashboardHelper
-    def loyalty_paginate(collection)
+    def referral_box_paginate(collection)
       if defined?(Kaminari) && collection.respond_to?(:current_page)
         paginate(collection)
       else

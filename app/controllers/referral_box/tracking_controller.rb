@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module LoyaltyRef
+module ReferralBox
   class TrackingController < ActionController::Base
     skip_before_action :verify_authenticity_token, only: [:track_referral]
     
@@ -9,7 +9,7 @@ module LoyaltyRef
       device_data = params[:device_data]
       
       if ref_code.present?
-        success = LoyaltyRef.track_referral(
+        success = ReferralBox.track_referral(
           ref_code: ref_code,
           user_agent: request.user_agent,
           ip_address: request.remote_ip,

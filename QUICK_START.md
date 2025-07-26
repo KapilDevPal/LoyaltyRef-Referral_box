@@ -1,4 +1,4 @@
-# LoyaltyRef - Quick Start Guide
+# ReferralBox - Quick Start Guide
 
 Get your loyalty and referral system running in 5 minutes! 🚀
 
@@ -6,13 +6,13 @@ Get your loyalty and referral system running in 5 minutes! 🚀
 
 ### 1. Add to Gemfile
 ```ruby
-gem 'loyalty_ref'
+gem 'referral_box'
 ```
 
 ### 2. Install & Setup
 ```bash
 bundle install
-rails generate loyalty_ref:install
+rails generate referral_box:install
 rails db:migrate
 ```
 
@@ -21,18 +21,18 @@ Add this to your model file (e.g., `app/models/user.rb`, `app/models/customer.rb
 
 ```ruby
 class User < ApplicationRecord  # or Customer, Account, Member, etc.
-  has_many :loyalty_ref_transactions, class_name: 'LoyaltyRef::Transaction', as: :user
+  has_many :referral_box_transactions, class_name: 'ReferralBox::Transaction', as: :user
   has_many :referrals, class_name: 'User', foreign_key: 'referrer_id'
   belongs_to :referrer, class_name: 'User', optional: true
 
   before_create :generate_referral_code
 
   def points_balance
-    LoyaltyRef.balance(self)
+    ReferralBox.balance(self)
   end
 
   def current_tier
-    LoyaltyRef.tier(self)
+    ReferralBox.tier(self)
   end
 
   def referral_link
@@ -56,11 +56,11 @@ end
 rails server
 ```
 
-Visit: `http://localhost:3000/loyalty` - Your admin dashboard!
+Visit: `http://localhost:3000/referral_box` - Your admin dashboard!
 
 ## 🔄 Flexible Model Support
 
-**LoyaltyRef works with ANY model!** You can use:
+**ReferralBox works with ANY model!** You can use:
 - `User` (default)
 - `Customer`
 - `Account`
@@ -70,8 +70,8 @@ Visit: `http://localhost:3000/loyalty` - Your admin dashboard!
 Just change the `reference_class_name` in your initializer:
 
 ```ruby
-# config/initializers/loyalty_ref.rb
-LoyaltyRef.configure do |config|
+# config/initializers/referral_box.rb
+ReferralBox.configure do |config|
   config.reference_class_name = 'Customer'  # or 'Account', 'Member', etc.
   # ... rest of config
 end
@@ -82,30 +82,30 @@ end
 ### Earn Points
 ```ruby
 # In your controller
-LoyaltyRef.earn_points(current_user, 100)  # or current_customer, etc.
+ReferralBox.earn_points(current_user, 100)  # or current_customer, etc.
 ```
 
 ### Check Balance
 ```ruby
-balance = LoyaltyRef.balance(current_user)
-tier = LoyaltyRef.tier(current_user)
+balance = ReferralBox.balance(current_user)
+tier = ReferralBox.tier(current_user)
 ```
 
 ### Track Referrals
 ```ruby
 # When someone clicks a referral link
-LoyaltyRef.track_referral(ref_code: params[:ref])
+ReferralBox.track_referral(ref_code: params[:ref])
 
 # When someone signs up with referral
-LoyaltyRef.process_referral_signup(new_user, ref_code)
+ReferralBox.process_referral_signup(new_user, ref_code)
 ```
 
 ## ⚙️ Basic Configuration
 
-Edit `config/initializers/loyalty_ref.rb`:
+Edit `config/initializers/referral_box.rb`:
 
 ```ruby
-LoyaltyRef.configure do |config|
+ReferralBox.configure do |config|
   config.reference_class_name = 'User'  # or 'Customer', 'Account', etc.
   
   # Earn 10 points per $1 spent
@@ -122,8 +122,8 @@ LoyaltyRef.configure do |config|
   
   # Referral rewards
   config.referral_reward = ->(referrer, referee) do
-    LoyaltyRef.earn_points(referrer, 100)
-    LoyaltyRef.earn_points(referee, 50)
+    ReferralBox.earn_points(referrer, 100)
+    ReferralBox.earn_points(referee, 50)
   end
 end
 ```
@@ -147,7 +147,7 @@ Your loyalty system is now running with:
 
 ## 🆘 Need Help?
 
-- **Admin Dashboard**: `/loyalty` - See all your data
+- **Admin Dashboard**: `/referral_box` - See all your data
 - **Rails Console**: Test methods directly
 - **Full Guide**: `DOCUMENTATION.md` - Complete reference
 

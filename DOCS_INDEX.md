@@ -1,6 +1,6 @@
-# LoyaltyRef Documentation Index
+# ReferralBox Documentation Index
 
-Welcome to the LoyaltyRef gem documentation! Here's everything you need to get started and become an expert.
+Welcome to the ReferralBox gem documentation! Here's everything you need to get started and become an expert.
 
 ## 📚 Documentation Files
 
@@ -15,7 +15,7 @@ Welcome to the LoyaltyRef gem documentation! Here's everything you need to get s
 
 ## 🎯 Choose Your Path
 
-### 👶 **New to LoyaltyRef?**
+### 👶 **New to ReferralBox?**
 1. Start with **[README.md](README.md)** for overview
 2. Follow **[QUICK_START.md](QUICK_START.md)** to get running
 3. Read **[DOCUMENTATION.md](DOCUMENTATION.md)** for advanced features
@@ -63,13 +63,13 @@ Welcome to the LoyaltyRef gem documentation! Here's everything you need to get s
 ### Basic Usage
 ```ruby
 # Earn points
-LoyaltyRef.earn_points(user, 100)
+ReferralBox.earn_points(user, 100)
 
 # Check balance
-balance = LoyaltyRef.balance(user)
+balance = ReferralBox.balance(user)
 
 # Track referrals
-LoyaltyRef.track_referral(ref_code: params[:ref])
+ReferralBox.track_referral(ref_code: params[:ref])
 ```
 
 ### Advanced Features
@@ -89,4 +89,4 @@ Choose your path:
 
 ---
 
-**Happy coding with LoyaltyRef! 🎉** 
+**Happy coding with ReferralBox! 🎉** 

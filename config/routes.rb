@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-LoyaltyRef::Engine.routes.draw do
+ReferralBox::Engine.routes.draw do
   root to: "dashboard#index"
   
   get "users", to: "dashboard#users"

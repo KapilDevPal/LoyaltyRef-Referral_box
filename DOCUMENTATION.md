@@ -1,4 +1,4 @@
-# LoyaltyRef Gem - Complete Developer Guide
+# ReferralBox Gem - Complete Developer Guide
 
 ## 📖 Table of Contents
 
@@ -21,16 +21,16 @@ Add to your Gemfile and get started in minutes:
 
 ```ruby
 # Gemfile
-gem 'loyalty_ref'
+gem 'referral_box'
 ```
 
 ```bash
 bundle install
-rails generate loyalty_ref:install
+rails generate referral_box:install
 rails db:migrate
 ```
 
-Visit `/loyalty` to see your admin dashboard!
+Visit `/referral_box` to see your admin dashboard!
 
 ---
 
@@ -40,7 +40,7 @@ Visit `/loyalty` to see your admin dashboard!
 
 ```ruby
 # Gemfile
-gem 'loyalty_ref'
+gem 'referral_box'
 ```
 
 ### Step 2: Install Dependencies
@@ -52,11 +52,11 @@ bundle install
 ### Step 3: Run Generator
 
 ```bash
-rails generate loyalty_ref:install
+rails generate referral_box:install
 ```
 
 This will:
-- Create `config/initializers/loyalty_ref.rb`
+- Create `config/initializers/referral_box.rb`
 - Ask if you want to add columns to your model
 - Set up basic configuration
 
@@ -67,8 +67,8 @@ rails db:migrate
 ```
 
 This creates:
-- `loyalty_ref_transactions` table
-- `loyalty_ref_referral_logs` table
+- `referral_box_transactions` table
+- `referral_box_referral_logs` table
 - Adds `referral_code` and `tier` columns to your model table
 
 ### Step 5: Update Your Model
@@ -77,18 +77,18 @@ Add to your model file (e.g., `app/models/user.rb`, `app/models/customer.rb`, et
 
 ```ruby
 class User < ApplicationRecord  # or Customer, Account, etc.
-  has_many :loyalty_ref_transactions, class_name: 'LoyaltyRef::Transaction', as: :user
+  has_many :referral_box_transactions, class_name: 'ReferralBox::Transaction', as: :user
   has_many :referrals, class_name: 'User', foreign_key: 'referrer_id'
   belongs_to :referrer, class_name: 'User', optional: true
 
   before_create :generate_referral_code
 
   def points_balance
-    LoyaltyRef.balance(self)
+    ReferralBox.balance(self)
   end
 
   def current_tier
-    LoyaltyRef.tier(self)
+    ReferralBox.tier(self)
   end
 
   def referral_link
@@ -101,7 +101,7 @@ class User < ApplicationRecord  # or Customer, Account, etc.
     return if referral_code.present?
 
     loop do
-      self.referral_code = SecureRandom.alphanumeric(LoyaltyRef.configuration.referral_code_length).upcase
+      self.referral_code = SecureRandom.alphanumeric(ReferralBox.configuration.referral_code_length).upcase
       break unless User.exists?(referral_code: referral_code)
     end
   end
@@ -112,31 +112,31 @@ end
 
 ## 🔄 Flexible Model Support
 
-**LoyaltyRef works with ANY model!** You're not limited to just `User`. Here are examples:
+**ReferralBox works with ANY model!** You're not limited to just `User`. Here are examples:
 
 ### Example 1: Customer Model
 
 ```ruby
-# config/initializers/loyalty_ref.rb
-LoyaltyRef.configure do |config|
+# config/initializers/referral_box.rb
+ReferralBox.configure do |config|
   config.reference_class_name = 'Customer'
   # ... other config
 end
 
 # app/models/customer.rb
 class Customer < ApplicationRecord
-  has_many :loyalty_ref_transactions, class_name: 'LoyaltyRef::Transaction', as: :user
+  has_many :referral_box_transactions, class_name: 'ReferralBox::Transaction', as: :user
   has_many :referrals, class_name: 'Customer', foreign_key: 'referrer_id'
   belongs_to :referrer, class_name: 'Customer', optional: true
 
   before_create :generate_referral_code
 
   def points_balance
-    LoyaltyRef.balance(self)
+    ReferralBox.balance(self)
   end
 
   def current_tier
-    LoyaltyRef.tier(self)
+    ReferralBox.tier(self)
   end
 
   def referral_link
@@ -149,7 +149,7 @@ class Customer < ApplicationRecord
     return if referral_code.present?
 
     loop do
-      self.referral_code = SecureRandom.alphanumeric(LoyaltyRef.configuration.referral_code_length).upcase
+      self.referral_code = SecureRandom.alphanumeric(ReferralBox.configuration.referral_code_length).upcase
       break unless Customer.exists?(referral_code: referral_code)
     end
   end
@@ -159,26 +159,26 @@ end
 ### Example 2: Account Model
 
 ```ruby
-# config/initializers/loyalty_ref.rb
-LoyaltyRef.configure do |config|
+# config/initializers/referral_box.rb
+ReferralBox.configure do |config|
   config.reference_class_name = 'Account'
   # ... other config
 end
 
 # app/models/account.rb
 class Account < ApplicationRecord
-  has_many :loyalty_ref_transactions, class_name: 'LoyaltyRef::Transaction', as: :user
+  has_many :referral_box_transactions, class_name: 'ReferralBox::Transaction', as: :user
   has_many :referrals, class_name: 'Account', foreign_key: 'referrer_id'
   belongs_to :referrer, class_name: 'Account', optional: true
 
   before_create :generate_referral_code
 
   def points_balance
-    LoyaltyRef.balance(self)
+    ReferralBox.balance(self)
   end
 
   def current_tier
-    LoyaltyRef.tier(self)
+    ReferralBox.tier(self)
   end
 
   def referral_link
@@ -191,7 +191,7 @@ class Account < ApplicationRecord
     return if referral_code.present?
 
     loop do
-      self.referral_code = SecureRandom.alphanumeric(LoyaltyRef.configuration.referral_code_length).upcase
+      self.referral_code = SecureRandom.alphanumeric(ReferralBox.configuration.referral_code_length).upcase
       break unless Account.exists?(referral_code: referral_code)
     end
   end
@@ -201,26 +201,26 @@ end
 ### Example 3: Member Model
 
 ```ruby
-# config/initializers/loyalty_ref.rb
-LoyaltyRef.configure do |config|
+# config/initializers/referral_box.rb
+ReferralBox.configure do |config|
   config.reference_class_name = 'Member'
   # ... other config
 end
 
 # app/models/member.rb
 class Member < ApplicationRecord
-  has_many :loyalty_ref_transactions, class_name: 'LoyaltyRef::Transaction', as: :user
+  has_many :referral_box_transactions, class_name: 'ReferralBox::Transaction', as: :user
   has_many :referrals, class_name: 'Member', foreign_key: 'referrer_id'
   belongs_to :referrer, class_name: 'Member', optional: true
 
   before_create :generate_referral_code
 
   def points_balance
-    LoyaltyRef.balance(self)
+    ReferralBox.balance(self)
   end
 
   def current_tier
-    LoyaltyRef.tier(self)
+    ReferralBox.tier(self)
   end
 
   def referral_link
@@ -233,7 +233,7 @@ class Member < ApplicationRecord
     return if referral_code.present?
 
     loop do
-      self.referral_code = SecureRandom.alphanumeric(LoyaltyRef.configuration.referral_code_length).upcase
+      self.referral_code = SecureRandom.alphanumeric(ReferralBox.configuration.referral_code_length).upcase
       break unless Member.exists?(referral_code: referral_code)
     end
   end
@@ -244,17 +244,17 @@ end
 
 #### For Customer Model:
 ```bash
-rails generate migration AddLoyaltyRefToCustomers referral_code:string tier:string referrer:references
+rails generate migration AddReferralBoxToCustomers referral_code:string tier:string referrer:references
 ```
 
 #### For Account Model:
 ```bash
-rails generate migration AddLoyaltyRefToAccounts referral_code:string tier:string referrer:references
+rails generate migration AddReferralBoxToAccounts referral_code:string tier:string referrer:references
 ```
 
 #### For Member Model:
 ```bash
-rails generate migration AddLoyaltyRefToMembers referral_code:string tier:string referrer:references
+rails generate migration AddReferralBoxToMembers referral_code:string tier:string referrer:references
 ```
 
 ### Key Points:
@@ -269,17 +269,17 @@ rails generate migration AddLoyaltyRefToMembers referral_code:string tier:string
 ```ruby
 # With Customer model
 customer = Customer.create!(email: "john@example.com")
-LoyaltyRef.earn_points(customer, 100)
-balance = LoyaltyRef.balance(customer)
+ReferralBox.earn_points(customer, 100)
+balance = ReferralBox.balance(customer)
 
 # With Account model
 account = Account.create!(name: "Business Account")
-LoyaltyRef.earn_points(account, 100)
-tier = LoyaltyRef.tier(account)
+ReferralBox.earn_points(account, 100)
+tier = ReferralBox.tier(account)
 
 # With Member model
 member = Member.create!(username: "john_doe")
-LoyaltyRef.earn_points(member, 100)
+ReferralBox.earn_points(member, 100)
 referral_link = member.referral_link
 ```
 
@@ -290,9 +290,9 @@ referral_link = member.referral_link
 ### Basic Configuration
 
 ```ruby
-# config/initializers/loyalty_ref.rb
+# config/initializers/referral_box.rb
 
-LoyaltyRef.configure do |config|
+ReferralBox.configure do |config|
   # Define your model (User, Customer, Account, Member, etc.)
   config.reference_class_name = 'User'  # or 'Customer', 'Account', etc.
 
@@ -321,8 +321,8 @@ LoyaltyRef.configure do |config|
 
   # Referral rewards
   config.referral_reward = ->(referrer, referee) do
-    LoyaltyRef.earn_points(referrer, 100)
-    LoyaltyRef.earn_points(referee, 50)
+    ReferralBox.earn_points(referrer, 100)
+    ReferralBox.earn_points(referee, 50)
   end
 
   # Points expiration (days)
@@ -332,7 +332,7 @@ LoyaltyRef.configure do |config|
   config.referral_code_length = 8
 
   # Admin dashboard path
-  config.admin_route_path = "/loyalty"
+  config.admin_route_path = "/referral_box"
 end
 ```
 
@@ -348,7 +348,7 @@ end
 | `referral_reward` | Lambda | `nil` | Logic for referral rewards |
 | `points_expiry_days` | Integer | 90 | Days until points expire |
 | `referral_code_length` | Integer | 8 | Length of referral codes |
-| `admin_route_path` | String | '/loyalty' | Admin dashboard URL path |
+| `admin_route_path` | String | '/referral_box' | Admin dashboard URL path |
 | `on_tier_changed` | Lambda | `nil` | Callback when user tier changes |
 
 ---
@@ -361,33 +361,33 @@ end
 
 ```ruby
 # Basic earning
-LoyaltyRef.earn_points(user, 100)
+ReferralBox.earn_points(user, 100)
 
 # With event data
-LoyaltyRef.earn_points(user, 100, event: order)
+ReferralBox.earn_points(user, 100, event: order)
 
 # Custom earning rule (defined in config)
-LoyaltyRef.earn_points(user, order.amount, event: order)
+ReferralBox.earn_points(user, order.amount, event: order)
 ```
 
 #### Redeem Points
 
 ```ruby
 # Redeem points
-LoyaltyRef.redeem_points(user, 50)
+ReferralBox.redeem_points(user, 50)
 
 # With offer data
-LoyaltyRef.redeem_points(user, 50, offer: coupon)
+ReferralBox.redeem_points(user, 50, offer: coupon)
 ```
 
 #### Check Balance
 
 ```ruby
 # Get current balance
-balance = LoyaltyRef.balance(user)
+balance = ReferralBox.balance(user)
 
 # Check if user has enough points
-if LoyaltyRef.balance(user) >= 100
+if ReferralBox.balance(user) >= 100
   # Process redemption
 end
 ```
@@ -398,11 +398,11 @@ end
 
 ```ruby
 # Get current tier
-tier = LoyaltyRef.tier(user)
+tier = ReferralBox.tier(user)
 # Returns: "Silver", "Gold", "Platinum", or nil
 
 # Check if user is in specific tier
-if LoyaltyRef.tier(user) == "Gold"
+if ReferralBox.tier(user) == "Gold"
   # Apply Gold tier benefits
 end
 ```
@@ -422,7 +422,7 @@ end
 
 ```ruby
 # Track when someone clicks a referral link
-LoyaltyRef.track_referral(
+ReferralBox.track_referral(
   ref_code: params[:ref],
   user_agent: request.user_agent,
   ip_address: request.remote_ip
@@ -433,16 +433,16 @@ LoyaltyRef.track_referral(
 
 ```ruby
 # When new user signs up with referral code
-LoyaltyRef.process_referral_signup(new_user, ref_code)
+ReferralBox.process_referral_signup(new_user, ref_code)
 ```
 
 #### Get Referral Analytics
 
 ```ruby
 # Get referral statistics
-total_clicks = LoyaltyRef::ReferralLog.clicked_count
-total_conversions = LoyaltyRef::ReferralLog.converted_count
-conversion_rate = LoyaltyRef::ReferralLog.conversion_rate
+total_clicks = ReferralBox::ReferralLog.clicked_count
+total_conversions = ReferralBox::ReferralLog.converted_count
+conversion_rate = ReferralBox::ReferralLog.conversion_rate
 ```
 
 ---
@@ -451,7 +451,7 @@ conversion_rate = LoyaltyRef::ReferralLog.conversion_rate
 
 ### Core Methods
 
-#### `LoyaltyRef.earn_points(user, amount, event: nil)`
+#### `ReferralBox.earn_points(user, amount, event: nil)`
 
 Earns points for a user.
 
@@ -464,10 +464,10 @@ Earns points for a user.
 
 **Example:**
 ```ruby
-transaction = LoyaltyRef.earn_points(user, 100, event: order)
+transaction = ReferralBox.earn_points(user, 100, event: order)
 ```
 
-#### `LoyaltyRef.redeem_points(user, points, offer: nil)`
+#### `ReferralBox.redeem_points(user, points, offer: nil)`
 
 Redeems points from a user's balance.
 
@@ -480,10 +480,10 @@ Redeems points from a user's balance.
 
 **Example:**
 ```ruby
-transaction = LoyaltyRef.redeem_points(user, 50, offer: coupon)
+transaction = ReferralBox.redeem_points(user, 50, offer: coupon)
 ```
 
-#### `LoyaltyRef.balance(user)`
+#### `ReferralBox.balance(user)`
 
 Gets the current points balance for a user.
 
@@ -494,10 +494,10 @@ Gets the current points balance for a user.
 
 **Example:**
 ```ruby
-balance = LoyaltyRef.balance(user)
+balance = ReferralBox.balance(user)
 ```
 
-#### `LoyaltyRef.tier(user)`
+#### `ReferralBox.tier(user)`
 
 Gets the current tier for a user.
 
@@ -508,10 +508,10 @@ Gets the current tier for a user.
 
 **Example:**
 ```ruby
-tier = LoyaltyRef.tier(user)
+tier = ReferralBox.tier(user)
 ```
 
-#### `LoyaltyRef.track_referral(ref_code:, user_agent: nil, ip_address: nil, referrer: nil)`
+#### `ReferralBox.track_referral(ref_code:, user_agent: nil, ip_address: nil, referrer: nil)`
 
 Tracks a referral link click.
 
@@ -525,14 +525,14 @@ Tracks a referral link click.
 
 **Example:**
 ```ruby
-log = LoyaltyRef.track_referral(
+log = ReferralBox.track_referral(
   ref_code: params[:ref],
   user_agent: request.user_agent,
   ip_address: request.remote_ip
 )
 ```
 
-#### `LoyaltyRef.process_referral_signup(referee, ref_code)`
+#### `ReferralBox.process_referral_signup(referee, ref_code)`
 
 Processes a referral signup.
 
@@ -544,7 +544,7 @@ Processes a referral signup.
 
 **Example:**
 ```ruby
-success = LoyaltyRef.process_referral_signup(new_user, ref_code)
+success = ReferralBox.process_referral_signup(new_user, ref_code)
 ```
 
 ### Model Methods
@@ -565,7 +565,7 @@ user.successful_referrals   # Count successful referrals
 
 ### Access Dashboard
 
-Visit: `http://your-app.com/loyalty`
+Visit: `http://your-app.com/referral_box`
 
 ### Dashboard Features
 
@@ -599,7 +599,7 @@ Visit: `http://your-app.com/loyalty`
 
 ```ruby
 # In your initializer
-config.admin_route_path = "/admin/loyalty"
+config.admin_route_path = "/admin/referral_box"
 ```
 
 ---
@@ -641,10 +641,10 @@ end
 # Complex referral rewards
 config.referral_reward = ->(referrer, referee) do
   # Give referrer points
-  LoyaltyRef.earn_points(referrer, 100)
+  ReferralBox.earn_points(referrer, 100)
   
   # Give referee welcome bonus
-  LoyaltyRef.earn_points(referee, 50)
+  ReferralBox.earn_points(referee, 50)
   
   # Send notifications
   ReferralMailer.welcome_bonus(referee).deliver_later
@@ -681,7 +681,7 @@ class Order < ApplicationRecord
   private
   
   def award_points
-    LoyaltyRef.earn_points(user, order_total, event: self)
+    ReferralBox.earn_points(user, order_total, event: self)
   end
 end
 
@@ -689,8 +689,8 @@ end
 class Coupon < ApplicationRecord
   def apply_to_order(order)
     points_cost = cost_in_points
-    if LoyaltyRef.balance(order.user) >= points_cost
-      LoyaltyRef.redeem_points(order.user, points_cost, offer: self)
+    if ReferralBox.balance(order.user) >= points_cost
+      ReferralBox.redeem_points(order.user, points_cost, offer: self)
       order.apply_discount(discount_amount)
     end
   end
@@ -708,7 +708,7 @@ class ApplicationController < ActionController::Base
   
   def track_referral
     if params[:ref].present?
-      LoyaltyRef.track_referral(
+      ReferralBox.track_referral(
         ref_code: params[:ref],
         user_agent: request.user_agent,
         ip_address: request.remote_ip
@@ -725,7 +725,7 @@ class UsersController < ApplicationController
     if @user.save
       # Process referral if present
       if session[:referral_code].present?
-        LoyaltyRef.process_referral_signup(@user, session[:referral_code])
+        ReferralBox.process_referral_signup(@user, session[:referral_code])
       end
       
       redirect_to @user
@@ -740,21 +740,21 @@ end
 
 ```ruby
 # API endpoint for points balance
-class Api::LoyaltyController < ApplicationController
+class Api::ReferralBoxController < ApplicationController
   def balance
     render json: {
-      balance: LoyaltyRef.balance(current_user),
-      tier: LoyaltyRef.tier(current_user),
+      balance: ReferralBox.balance(current_user),
+      tier: ReferralBox.tier(current_user),
       referral_code: current_user.referral_code
     }
   end
   
   def earn_points
     amount = params[:amount].to_i
-    transaction = LoyaltyRef.earn_points(current_user, amount)
+    transaction = ReferralBox.earn_points(current_user, amount)
     
     if transaction
-      render json: { success: true, new_balance: LoyaltyRef.balance(current_user) }
+      render json: { success: true, new_balance: ReferralBox.balance(current_user) }
     else
       render json: { success: false, error: "Failed to earn points" }
     end
@@ -778,7 +778,7 @@ end
 rails server
 ```
 
-#### 2. "uninitialized constant LoyaltyRef" Error
+#### 2. "uninitialized constant ReferralBox" Error
 
 **Problem:** Gem not loaded properly
 
@@ -802,7 +802,7 @@ rails db:migrate
 
 **Problem:** Dashboard routes not working
 
-**Solution:** Check your routes.rb file. The gem should auto-mount at `/loyalty`.
+**Solution:** Check your routes.rb file. The gem should auto-mount at `/referral_box`.
 
 #### 5. Referral Codes Not Generating
 
@@ -816,7 +816,7 @@ Enable debug logging:
 
 ```ruby
 # In your initializer
-LoyaltyRef.configure do |config|
+ReferralBox.configure do |config|
   config.debug = true
 end
 ```
@@ -825,8 +825,8 @@ end
 
 ```ruby
 # In Rails console
-puts LoyaltyRef.configuration.reference_class_name
-puts LoyaltyRef.configuration.tier_thresholds
+puts ReferralBox.configuration.reference_class_name
+puts ReferralBox.configuration.tier_thresholds
 ```
 
 ---
@@ -836,8 +836,8 @@ puts LoyaltyRef.configuration.tier_thresholds
 ### Complete E-commerce Example
 
 ```ruby
-# config/initializers/loyalty_ref.rb
-LoyaltyRef.configure do |config|
+# config/initializers/referral_box.rb
+ReferralBox.configure do |config|
   config.reference_class_name = 'Customer'  # Using Customer model
   
   config.earning_rule = ->(customer, event) do
@@ -871,8 +871,8 @@ LoyaltyRef.configure do |config|
   end
   
   config.referral_reward = ->(referrer, referee) do
-    LoyaltyRef.earn_points(referrer, 100, event: OpenStruct.new(class: { name: 'Referral' }))
-    LoyaltyRef.earn_points(referee, 50, event: OpenStruct.new(class: { name: 'Referral' }))
+    ReferralBox.earn_points(referrer, 100, event: OpenStruct.new(class: { name: 'Referral' }))
+    ReferralBox.earn_points(referee, 50, event: OpenStruct.new(class: { name: 'Referral' }))
   end
   
   config.points_expiry_days = 90
@@ -884,18 +884,18 @@ end
 
 ```ruby
 class Customer < ApplicationRecord
-  has_many :loyalty_ref_transactions, class_name: 'LoyaltyRef::Transaction', as: :user
+  has_many :referral_box_transactions, class_name: 'ReferralBox::Transaction', as: :user
   has_many :referrals, class_name: 'Customer', foreign_key: 'referrer_id'
   belongs_to :referrer, class_name: 'Customer', optional: true
   
   before_create :generate_referral_code
   
   def points_balance
-    LoyaltyRef.balance(self)
+    ReferralBox.balance(self)
   end
   
   def current_tier
-    LoyaltyRef.tier(self)
+    ReferralBox.tier(self)
   end
   
   def referral_link
@@ -903,7 +903,7 @@ class Customer < ApplicationRecord
   end
   
   def can_redeem?(points)
-    LoyaltyRef.balance(self) >= points
+    ReferralBox.balance(self) >= points
   end
   
   def tier_benefits
@@ -923,7 +923,7 @@ class Customer < ApplicationRecord
     return if referral_code.present?
     
     loop do
-      self.referral_code = SecureRandom.alphanumeric(LoyaltyRef.configuration.referral_code_length).upcase
+      self.referral_code = SecureRandom.alphanumeric(ReferralBox.configuration.referral_code_length).upcase
       break unless Customer.exists?(referral_code: referral_code)
     end
   end
@@ -938,7 +938,7 @@ end
 
 1. **Check the documentation** - This guide covers most use cases
 2. **Review the examples** - See working implementations
-3. **Check the admin dashboard** - `/loyalty` for debugging
+3. **Check the admin dashboard** - `/referral_box` for debugging
 4. **Use Rails console** - Test methods directly
 
 ### Useful Console Commands
@@ -946,25 +946,25 @@ end
 ```ruby
 # Test basic functionality
 customer = Customer.first  # or User.first, Account.first, etc.
-LoyaltyRef.earn_points(customer, 100)
-puts LoyaltyRef.balance(customer)
-puts LoyaltyRef.tier(customer)
+ReferralBox.earn_points(customer, 100)
+puts ReferralBox.balance(customer)
+puts ReferralBox.tier(customer)
 
 # Check configuration
-puts LoyaltyRef.configuration.reference_class_name
-puts LoyaltyRef.configuration.tier_thresholds
+puts ReferralBox.configuration.reference_class_name
+puts ReferralBox.configuration.tier_thresholds
 
 # Test referral tracking
-LoyaltyRef.track_referral(ref_code: customer.referral_code)
+ReferralBox.track_referral(ref_code: customer.referral_code)
 
 # Check transaction history
-LoyaltyRef::Transaction.where(user: customer).count
+ReferralBox::Transaction.where(user: customer).count
 ```
 
 ### Version Information
 
 ```ruby
-puts LoyaltyRef::VERSION
+puts ReferralBox::VERSION
 ```
 
 ---
@@ -975,4 +975,4 @@ MIT License - See LICENSE.txt for details.
 
 ---
 
-**Happy coding with LoyaltyRef! 🎉** 
+**Happy coding with ReferralBox! 🎉** 

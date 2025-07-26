@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LoyaltyRef Dashboard</title>
+  <title>ReferralBox Dashboard</title>
   <style>
     * {
       margin: 0;
@@ -213,17 +213,17 @@
 </head>
 <body>
   <nav class="navbar">
-    <h1>💎 LoyaltyRef Dashboard</h1>
+    <h1>📦 ReferralBox Dashboard</h1>
   </nav>
 
   <div class="container">
     <div class="sidebar">
       <nav class="nav-links">
-        <%= link_to "Dashboard", loyalty_ref.root_path, class: current_page?(loyalty_ref.root_path) ? "active" : "" %>
-        <%= link_to "Users", loyalty_ref.users_path, class: current_page?(loyalty_ref.users_path) ? "active" : "" %>
-        <%= link_to "Transactions", loyalty_ref.transactions_path, class: current_page?(loyalty_ref.transactions_path) ? "active" : "" %>
-        <%= link_to "Referrals", loyalty_ref.referrals_path, class: current_page?(loyalty_ref.referrals_path) ? "active" : "" %>
-        <%= link_to "Analytics", loyalty_ref.analytics_path, class: current_page?(loyalty_ref.analytics_path) ? "active" : "" %>
+        <%= link_to "Dashboard", referral_box.root_path, class: current_page?(referral_box.root_path) ? "active" : "" %>
+        <%= link_to "Users", referral_box.users_path, class: current_page?(referral_box.users_path) ? "active" : "" %>
+        <%= link_to "Transactions", referral_box.transactions_path, class: current_page?(referral_box.transactions_path) ? "active" : "" %>
+        <%= link_to "Referrals", referral_box.referrals_path, class: current_page?(referral_box.referrals_path) ? "active" : "" %>
+        <%= link_to "Analytics", referral_box.analytics_path, class: current_page?(referral_box.analytics_path) ? "active" : "" %>
       </nav>
     </div>
 

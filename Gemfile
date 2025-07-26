@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-# Specify your gem's dependencies in loyalty_ref.gemspec
+# Specify your gem's dependencies in referral_box.gemspec
 gemspec
 
 group :development, :test do

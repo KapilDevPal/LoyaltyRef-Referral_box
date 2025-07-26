@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module LoyaltyRef
+module ReferralBox
   class Configuration
     attr_accessor :reference_class_name,
                   :earning_rule,
@@ -24,7 +24,7 @@ module LoyaltyRef
       }
       @points_expiry_days = 90
       @referral_code_length = 8
-      @admin_route_path = "/loyalty"
+      @admin_route_path = "/referral_box"
       @enable_device_tracking = true
       @collect_geo_location = false  # Default to false for privacy
     end

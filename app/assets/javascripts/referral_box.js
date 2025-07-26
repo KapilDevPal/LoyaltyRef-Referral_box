@@ -1,11 +1,11 @@
-// LoyaltyRef - Device Detection and Geo-location Collection
+// ReferralBox - Device Detection and Geo-location Collection
 // This script automatically collects device and location data when users click referral links
 
 (function() {
   'use strict';
 
-  // Check if LoyaltyRef tracking is enabled
-  if (typeof window.LoyaltyRefConfig === 'undefined' || !window.LoyaltyRefConfig.enabled) {
+  // Check if ReferralBox tracking is enabled
+  if (typeof window.ReferralBoxConfig === 'undefined' || !window.ReferralBoxConfig.enabled) {
     return;
   }
 
@@ -52,7 +52,7 @@
   // Geo-location detection (if enabled and user consents)
   function detectLocation() {
     return new Promise((resolve) => {
-      if (!window.LoyaltyRefConfig.collect_geo || !navigator.geolocation) {
+      if (!window.ReferralBoxConfig.collect_geo || !navigator.geolocation) {
         resolve(null);
         return;
       }
@@ -67,7 +67,7 @@
           });
         },
         function(error) {
-          console.log('LoyaltyRef: Geolocation not available or denied');
+          console.log('ReferralBox: Geolocation not available or denied');
           resolve(null);
         },
         {
@@ -106,7 +106,7 @@
           const deviceData = await collectDeviceData();
           
           // Store in sessionStorage for the next page load
-          sessionStorage.setItem('loyalty_ref_device_data', JSON.stringify(deviceData));
+          sessionStorage.setItem('referral_box_device_data', JSON.stringify(deviceData));
           
           // Add a small delay to ensure data is stored
           setTimeout(() => {
@@ -115,7 +115,7 @@
           }, 100);
           
         } catch (error) {
-          console.error('LoyaltyRef: Error collecting device data:', error);
+          console.error('ReferralBox: Error collecting device data:', error);
         }
       });
     });
@@ -129,7 +129,7 @@
   }
 
   // Make functions available globally for manual use
-  window.LoyaltyRef = {
+  window.ReferralBox = {
     detectDevice: detectDevice,
     detectLocation: detectLocation,
     collectDeviceData: collectDeviceData
