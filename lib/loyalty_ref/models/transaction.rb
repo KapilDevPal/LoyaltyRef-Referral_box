@@ -1,0 +1,37 @@
+# frozen_string_literal: true
+
+module LoyaltyRef
+  class Transaction < ActiveRecord::Base
+    self.table_name = "loyalty_ref_transactions"
+
+    belongs_to :user, polymorphic: true
+
+    validates :points, presence: true, numericality: { other_than: 0 }
+    validates :transaction_type, presence: true, inclusion: { in: %w[earn redeem adjust] }
+
+    scope :earned, -> { where(transaction_type: "earn") }
+    scope :redeemed, -> { where(transaction_type: "redeem") }
+    scope :active, -> { where("expires_at IS NULL OR expires_at > ?", Time.current) }
+    scope :expired, -> { where("expires_at IS NOT NULL AND expires_at <= ?", Time.current) }
+
+    def expired?
+      expires_at.present? && expires_at <= Time.current
+    end
+
+    def active?
+      !expired?
+    end
+
+    def earned?
+      transaction_type == "earn"
+    end
+
+    def redeemed?
+      transaction_type == "redeem"
+    end
+
+    def adjusted?
+      transaction_type == "adjust"
+    end
+  end
+end 

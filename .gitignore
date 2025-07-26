@@ -1,0 +1,63 @@
+# Dependencies
+/vendor/bundle
+/.bundle
+/lib/bundler/man
+
+# Documentation cache and generated files
+/.yardoc/
+/_yardoc/
+/doc/
+/rdoc/
+
+# Environment normalisation file
+/.env
+/.env.local
+/.env.*.local
+
+# Ignore all logfiles and tempfiles
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+
+# Ignore pidfiles, but keep the directory
+/tmp/pids/*
+!/tmp/pids/
+!/tmp/pids/.keep
+
+# Ignore uploaded files in development
+/storage/*
+!/storage/.keep
+
+# Ignore master key for decrypting credentials and more
+/config/master.key
+
+# Ignore application configuration
+/config/application.yml
+
+# Ignore test app
+/test_app/
+
+# Ignore gem build artifacts
+*.gem
+
+# Ignore IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Ignore OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Ignore coverage reports
+/coverage/
+
+# Ignore rspec results
+/rspec_results.xml 
