@@ -14,7 +14,6 @@ Gem::Specification.new do |spec|
   spec.license = "MIT"
   spec.required_ruby_version = ">= 2.7.0"
 
-  spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/KapilDevPal/referral_box"
   spec.metadata["changelog_uri"] = "https://github.com/KapilDevPal/referral_box/blob/main/CHANGELOG.md"
   spec.metadata["rubygems_mfa_required"] = "true"
