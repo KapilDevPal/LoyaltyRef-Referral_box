@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.7] - 2025-01-XX
+
+### Added
+- **Admin Dashboard Views**: Added all missing view templates for the admin dashboard
+- **Dashboard Index**: Overview with statistics, recent transactions, and top users
+- **Users List**: Complete user management with points, tiers, and referral codes
+- **User Details**: Individual user profiles with transaction history
+- **Transactions**: Full transaction history with filtering and pagination
+- **Referrals**: Referral tracking with device and browser analytics
+- **Analytics**: Comprehensive analytics with device breakdown and daily trends
+
+### Fixed
+- **Missing Templates**: Resolved "ActionController::MissingExactTemplate" error
+- **Dashboard Navigation**: All dashboard sections now have proper views
+
 ## [0.1.5] - 2025-01-XX
 
 ### Fixed

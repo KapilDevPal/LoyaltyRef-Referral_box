@@ -1,0 +1,112 @@
+<div class="card">
+  <h2>👤 User Details: <%= @user.email || @user.name || "Unknown" %></h2>
+  
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-number"><%= @balance %></div>
+      <div class="stat-label">Points Balance</div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-number">
+        <% if @tier %>
+          <span class="badge <%= @tier.downcase %>"><%= @tier %></span>
+        <% else %>
+          <span class="badge">None</span>
+        <% end %>
+      </div>
+      <div class="stat-label">Current Tier</div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-number"><%= @user.referrals.count %></div>
+      <div class="stat-label">Total Referrals</div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-number"><%= @transactions.count %></div>
+      <div class="stat-label">Total Transactions</div>
+    </div>
+  </div>
+  
+  <div class="user-info">
+    <h3>User Information</h3>
+    <table class="table">
+      <tr>
+        <td><strong>Email:</strong></td>
+        <td><%= @user.email %></td>
+      </tr>
+      <tr>
+        <td><strong>Name:</strong></td>
+        <td><%= @user.name %></td>
+      </tr>
+      <tr>
+        <td><strong>Referral Code:</strong></td>
+        <td>
+          <% if @user.respond_to?(:referral_code) && @user.referral_code.present? %>
+            <code><%= @user.referral_code %></code>
+          <% else %>
+            <span class="text-muted">Not generated</span>
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Referrer:</strong></td>
+        <td>
+          <% if @user.referrer %>
+            <%= @user.referrer.email || @user.referrer.name || "Unknown" %>
+          <% else %>
+            <span class="text-muted">No referrer</span>
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Joined:</strong></td>
+        <td><%= @user.created_at.strftime("%B %d, %Y at %I:%M %p") %></td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div class="card">
+  <h2>📊 Transaction History</h2>
+  
+  <% if @transactions.any? %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Points</th>
+          <th>Description</th>
+          <th>Date</th>
+          <th>Expires</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @transactions.each do |transaction| %>
+          <tr>
+            <td>
+              <span class="badge <%= transaction.transaction_type %>">
+                <%= transaction.transaction_type.titleize %>
+              </span>
+            </td>
+            <td><%= transaction.points %></td>
+            <td><%= transaction.description %></td>
+            <td><%= transaction.created_at.strftime("%b %d, %Y") %></td>
+            <td>
+              <% if transaction.expires_at %>
+                <%= transaction.expires_at.strftime("%b %d, %Y") %>
+              <% else %>
+                <span class="text-muted">Never</span>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    
+    <%= referral_box_paginate(@transactions) %>
+  <% else %>
+    <p>No transactions found for this user.</p>
+  <% end %>
+</div> 

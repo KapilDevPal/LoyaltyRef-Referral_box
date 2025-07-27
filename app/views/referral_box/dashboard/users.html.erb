@@ -1,0 +1,55 @@
+<div class="card">
+  <h2>👥 All Users</h2>
+  
+  <% if @users.any? %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Points Balance</th>
+          <th>Tier</th>
+          <th>Referral Code</th>
+          <th>Referrals</th>
+          <th>Joined</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @users.each do |user| %>
+          <tr>
+            <td>
+              <strong><%= user.email || user.name || "Unknown" %></strong>
+            </td>
+            <td>
+              <strong><%= ReferralBox.balance(user) %></strong>
+            </td>
+            <td>
+              <% tier = ReferralBox.tier(user) %>
+              <% if tier %>
+                <span class="badge <%= tier.downcase %>"><%= tier %></span>
+              <% else %>
+                <span class="badge">None</span>
+              <% end %>
+            </td>
+            <td>
+              <% if user.respond_to?(:referral_code) && user.referral_code.present? %>
+                <code><%= user.referral_code %></code>
+              <% else %>
+                <span class="text-muted">Not generated</span>
+              <% end %>
+            </td>
+            <td><%= user.referrals.count %></td>
+            <td><%= user.created_at.strftime("%b %d, %Y") %></td>
+            <td>
+              <%= link_to "View Details", referral_box.user_path(user), class: "btn btn-primary" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    
+    <%= referral_box_paginate(@users) %>
+  <% else %>
+    <p>No users found.</p>
+  <% end %>
+</div> 

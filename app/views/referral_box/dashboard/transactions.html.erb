@@ -1,0 +1,54 @@
+<div class="card">
+  <h2>💳 All Transactions</h2>
+  
+  <% if @transactions.any? %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Type</th>
+          <th>Points</th>
+          <th>Description</th>
+          <th>Date</th>
+          <th>Expires</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @transactions.each do |transaction| %>
+          <tr>
+            <td>
+              <% if transaction.user %>
+                <%= link_to transaction.user.email || transaction.user.name || "Unknown", referral_box.user_path(transaction.user), class: "btn btn-primary" %>
+              <% else %>
+                <span class="text-muted">Unknown User</span>
+              <% end %>
+            </td>
+            <td>
+              <span class="badge <%= transaction.transaction_type %>">
+                <%= transaction.transaction_type.titleize %>
+              </span>
+            </td>
+            <td><%= transaction.points %></td>
+            <td><%= transaction.description %></td>
+            <td><%= transaction.created_at.strftime("%b %d, %Y at %I:%M") %></td>
+            <td>
+              <% if transaction.expires_at %>
+                <% if transaction.expired? %>
+                  <span class="text-danger">Expired</span>
+                <% else %>
+                  <%= transaction.expires_at.strftime("%b %d, %Y") %>
+                <% end %>
+              <% else %>
+                <span class="text-muted">Never</span>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    
+    <%= referral_box_paginate(@transactions) %>
+  <% else %>
+    <p>No transactions found.</p>
+  <% end %>
+</div> 
