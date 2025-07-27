@@ -92,8 +92,9 @@ module ReferralBox
       end
 
       def get_rails_version
-        # Get the major and minor version (e.g., "8.0" instead of just "8")
-        major, minor = Rails.version.split('.')[0..1]
+        # Get the major and minor version (e.g., "8.0" for Rails 8.0.x)
+        major = Rails.version.split('.').first
+        minor = Rails.version.split('.').second || '0'
         "#{major}.#{minor}"
       end
 
