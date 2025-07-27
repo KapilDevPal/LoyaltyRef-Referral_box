@@ -7,11 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.1.3] - 2025-01-XX
+## [0.1.4] - 2025-01-XX
 
 ### Fixed
 - **Migration Version Issue**: Fixed Rails migration version format to use proper version (e.g., "8.0" instead of "8")
 - Generator now creates migrations with correct Rails version format
+
+## [0.1.3] - 2025-01-XX
 
 ## [0.1.2] - 2025-01-XX
 
