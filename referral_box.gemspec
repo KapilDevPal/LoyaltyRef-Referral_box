@@ -23,11 +23,11 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  # Support Rails 6.0 and newer versions
-  spec.add_runtime_dependency "rails", "~> 6.0", ">= 6.0.0"
-  spec.add_runtime_dependency "activerecord", "~> 6.0", ">= 6.0.0"
-  spec.add_runtime_dependency "actionview", "~> 6.0", ">= 6.0.0"
-  spec.add_runtime_dependency "actionpack", "~> 6.0", ">= 6.0.0"
+  # ✅ Support Rails 6.0 and above (no upper limit)
+  spec.add_runtime_dependency "rails", ">= 6.0"
+  spec.add_runtime_dependency "activerecord", ">= 6.0"
+  spec.add_runtime_dependency "actionview", ">= 6.0"
+  spec.add_runtime_dependency "actionpack", ">= 6.0"
   spec.add_runtime_dependency "kaminari", "~> 1.2"
 
   spec.add_development_dependency "rspec-rails", "~> 5.0"
