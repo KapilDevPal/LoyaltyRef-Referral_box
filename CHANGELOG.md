@@ -7,11 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.1.4] - 2025-01-XX
+## [0.1.5] - 2025-01-XX
 
 ### Fixed
-- **Migration Version Issue**: Fixed Rails migration version format to use proper version (e.g., "8.0" instead of "8")
-- Generator now creates migrations with correct Rails version format
+- **Dynamic Migration Versioning**: Generator now creates migrations with correct Rails version format for any Rails version
+- **Gemspec Dependencies**: Fixed Rails dependency constraints to use proper version format
+- **Migration Compatibility**: Ensured all migrations work with Rails 6.0 through Rails 8.x
+
+### Improved
+- **Version Detection**: Enhanced Rails version detection in generator
+- **Cross-Version Support**: Better support for different Rails versions
+
+## [0.1.4] - 2025-01-XX
 
 ## [0.1.3] - 2025-01-XX
 
