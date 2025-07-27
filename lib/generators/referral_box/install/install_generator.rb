@@ -36,10 +36,17 @@ module ReferralBox
           model_file = "app/models/#{model_class.underscore}.rb"
           
           if File.exist?(model_file)
-            inject_into_file model_file, after: "class #{model_class} < ApplicationRecord" do
-              "\n  " + generate_model_methods(model_class)
+            model_content = File.read(model_file)
+            
+            # Check if ReferralBox methods already exist
+            if model_content.include?('ReferralBox::Transaction')
+              puts "ReferralBox methods already exist in #{model_class} model. Skipping..."
+            else
+              inject_into_file model_file, after: "class #{model_class} < ApplicationRecord" do
+                "\n  " + generate_model_methods(model_class)
+              end
+              puts "Added ReferralBox methods to #{model_class} model."
             end
-            puts "Added ReferralBox methods to #{model_class} model."
           else
             puts "Warning: #{model_file} not found. Please manually add ReferralBox methods to your #{model_class} model."
           end
@@ -81,11 +88,25 @@ module ReferralBox
 
           class AddReferralBoxTo#{model_class.pluralize} < ActiveRecord::Migration[#{get_rails_version}]
             def change
-              add_column :#{model_class.underscore.pluralize}, :referral_code, :string
-              add_column :#{model_class.underscore.pluralize}, :tier, :string
-              add_reference :#{model_class.underscore.pluralize}, :referrer, null: true, foreign_key: { to_table: :#{model_class.underscore.pluralize} }
+              # Add referral_code column if it doesn't exist
+              unless column_exists?(:#{model_class.underscore.pluralize}, :referral_code)
+                add_column :#{model_class.underscore.pluralize}, :referral_code, :string
+              end
               
-              add_index :#{model_class.underscore.pluralize}, :referral_code, unique: true
+              # Add tier column if it doesn't exist
+              unless column_exists?(:#{model_class.underscore.pluralize}, :tier)
+                add_column :#{model_class.underscore.pluralize}, :tier, :string
+              end
+              
+              # Add referrer_id column if it doesn't exist
+              unless column_exists?(:#{model_class.underscore.pluralize}, :referrer_id)
+                add_reference :#{model_class.underscore.pluralize}, :referrer, null: true, foreign_key: { to_table: :#{model_class.underscore.pluralize} }
+              end
+              
+              # Add unique index on referral_code if it doesn't exist
+              unless index_exists?(:#{model_class.underscore.pluralize}, :referral_code, unique: true)
+                add_index :#{model_class.underscore.pluralize}, :referral_code, unique: true
+              end
             end
           end
         MIGRATION
