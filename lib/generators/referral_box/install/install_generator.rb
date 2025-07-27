@@ -11,44 +11,66 @@ module ReferralBox
         template "initializer.rb", "config/initializers/referral_box.rb"
       end
 
-      def add_model_migration
-        # Read the configuration to determine the model class name
-        model_class = get_model_class_name
+      def ask_for_model_name
+        puts "\n" + "="*60
+        puts "ReferralBox Model Configuration"
+        puts "="*60
         
-        if model_class.present?
-          generate_migration = "AddReferralBoxTo#{model_class.pluralize}"
-          migration_content = generate_migration_content(model_class)
+        # Detect existing models
+        model_files = Dir.glob("app/models/*.rb")
+        existing_models = model_files.map { |f| File.basename(f, '.rb').classify }
+        
+        if existing_models.any?
+          puts "\nExisting models found: #{existing_models.join(', ')}"
+        end
+        
+        @model_class = ask("What is your user model class name? (e.g., User, Customer, Account, Member):", default: "User")
+        
+        # Confirm the choice
+        puts "\nYou selected: #{@model_class}"
+        confirm = ask("Is this correct? (y/n):", default: "y")
+        
+        unless confirm.downcase.start_with?('y')
+          puts "Please run the generator again with the correct model name."
+          exit
+        end
+        
+        # Update the initializer with the selected model
+        update_initializer_with_model(@model_class)
+      end
+
+      def add_model_migration
+        if @model_class.present?
+          generate_migration = "AddReferralBoxTo#{@model_class.pluralize}"
+          migration_content = generate_migration_content(@model_class)
           
           create_file "db/migrate/#{Time.current.strftime('%Y%m%d%H%M%S')}_#{generate_migration.underscore}.rb", migration_content
           
-          puts "Migration generated for #{model_class} model!"
+          puts "\nMigration generated for #{@model_class} model!"
           puts "Run 'rails db:migrate' to apply it."
         else
-          puts "Warning: Could not determine model class name from configuration."
+          puts "Warning: Could not determine model class name."
           puts "Please manually create migration for your model."
         end
       end
 
       def add_model_methods
-        model_class = get_model_class_name
-        
-        if model_class.present?
-          model_file = "app/models/#{model_class.underscore}.rb"
+        if @model_class.present?
+          model_file = "app/models/#{@model_class.underscore}.rb"
           
           if File.exist?(model_file)
-            model_content = File.read(model_file)
-            
-            # Check if ReferralBox methods already exist
-            if model_content.include?('ReferralBox::Transaction')
-              puts "ReferralBox methods already exist in #{model_class} model. Skipping..."
+            # Check if methods already exist
+            content = File.read(model_file)
+            if content.include?('has_many :referral_box_transactions')
+              puts "ReferralBox methods already exist in #{@model_class} model."
             else
-              inject_into_file model_file, after: "class #{model_class} < ApplicationRecord" do
-                "\n  " + generate_model_methods(model_class)
+              inject_into_file model_file, after: "class #{@model_class} < ApplicationRecord" do
+                "\n  " + generate_model_methods(@model_class)
               end
-              puts "Added ReferralBox methods to #{model_class} model."
+              puts "Added ReferralBox methods to #{@model_class} model."
             end
           else
-            puts "Warning: #{model_file} not found. Please manually add ReferralBox methods to your #{model_class} model."
+            puts "Warning: #{model_file} not found. Please manually add ReferralBox methods to your #{@model_class} model."
           end
         end
       end
@@ -67,19 +89,19 @@ module ReferralBox
 
       private
 
-      def get_model_class_name
-        # Try to read from existing initializer first
+      def update_initializer_with_model(model_class)
         initializer_path = "config/initializers/referral_box.rb"
         
         if File.exist?(initializer_path)
           content = File.read(initializer_path)
-          if match = content.match(/config\.reference_class_name\s*=\s*['"]([^'"]+)['"]/)
-            return match[1]
-          end
+          updated_content = content.gsub(
+            /config\.reference_class_name\s*=\s*['"][^'"]*['"]/,
+            "config.reference_class_name = '#{model_class}'"
+          )
+          
+          File.write(initializer_path, updated_content)
+          puts "Updated initializer with #{model_class} model."
         end
-        
-        # Default to 'User' if not found
-        'User'
       end
 
       def generate_migration_content(model_class)
@@ -98,13 +120,13 @@ module ReferralBox
                 add_column :#{model_class.underscore.pluralize}, :tier, :string
               end
               
-              # Add referrer_id column if it doesn't exist
+              # Add referrer reference if it doesn't exist
               unless column_exists?(:#{model_class.underscore.pluralize}, :referrer_id)
                 add_reference :#{model_class.underscore.pluralize}, :referrer, null: true, foreign_key: { to_table: :#{model_class.underscore.pluralize} }
               end
               
               # Add unique index on referral_code if it doesn't exist
-              unless index_exists?(:#{model_class.underscore.pluralize}, :referral_code, unique: true)
+              unless index_exists?(:#{model_class.underscore.pluralize}, :referral_code)
                 add_index :#{model_class.underscore.pluralize}, :referral_code, unique: true
               end
             end

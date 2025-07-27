@@ -9,11 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.1.8] - 2025-01-XX
 
+### Added
+- **Interactive Generator**: Generator now asks for model name and confirms the choice
+- **Model Detection**: Automatically detects existing models in the app
+- **Safe Migrations**: Migration now checks if columns exist before adding them
+- **Duplicate Prevention**: Prevents adding duplicate columns and methods
+
 ### Fixed
-- **Generator Safety**: Fixed generator to check for existing columns and methods before adding them
-- **Migration Safety**: Migration now uses `column_exists?` and `index_exists?` to prevent duplicate column errors
-- **Model Injection**: Generator now checks if ReferralBox methods already exist before injecting them
-- **Existing Model Support**: Better support for existing Rails models with partial ReferralBox integration
+- **Migration Errors**: Fixed "duplicate column name" errors by adding existence checks
+- **Generator Flow**: Improved user experience with interactive prompts
+- **Model Flexibility**: Better support for different model names (User, Customer, Account, etc.)
 
 ## [0.1.7] - 2025-01-XX
 
