@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.9] - 2025-01-XX
+
+### Added
+- **Logo**: Added ReferralBox logo to the gem and README
+- **Better Model Injection**: Improved generator to handle different model inheritance patterns
+- **Manual Instructions**: Clear instructions when automatic model injection fails
+
+### Fixed
+- **Generator Issues**: Fixed "File unchanged" error by improving model method injection logic
+- **Model Detection**: Better handling of models that inherit from different base classes
+- **User Experience**: Clearer error messages and manual setup instructions
+
 ## [0.1.8] - 2025-01-XX
 
 ### Added

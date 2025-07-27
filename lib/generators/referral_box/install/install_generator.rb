@@ -59,18 +59,30 @@ module ReferralBox
           model_file = "app/models/#{@model_class.underscore}.rb"
           
           if File.exist?(model_file)
-            # Check if methods already exist
             content = File.read(model_file)
+            
+            # Check if methods already exist
             if content.include?('has_many :referral_box_transactions')
               puts "ReferralBox methods already exist in #{@model_class} model."
             else
-              inject_into_file model_file, after: "class #{@model_class} < ApplicationRecord" do
-                "\n  " + generate_model_methods(@model_class)
+              # Try to inject after the class definition
+              if content.match(/class #{@model_class}\s+<\s+ApplicationRecord/)
+                inject_into_file model_file, after: "class #{@model_class} < ApplicationRecord" do
+                  "\n  " + generate_model_methods(@model_class)
+                end
+                puts "Added ReferralBox methods to #{@model_class} model."
+              elsif content.match(/class #{@model_class}\s+<\s+ActiveRecord::Base/)
+                inject_into_file model_file, after: "class #{@model_class} < ActiveRecord::Base" do
+                  "\n  " + generate_model_methods(@model_class)
+                end
+                puts "Added ReferralBox methods to #{@model_class} model."
+              else
+                # If we can't find the class definition, show manual instructions
+                show_manual_model_instructions(@model_class)
               end
-              puts "Added ReferralBox methods to #{@model_class} model."
             end
           else
-            puts "Warning: #{model_file} not found. Please manually add ReferralBox methods to your #{@model_class} model."
+            show_manual_model_instructions(@model_class)
           end
         end
       end
@@ -88,6 +100,17 @@ module ReferralBox
       end
 
       private
+
+      def show_manual_model_instructions(model_class)
+        puts "\n" + "="*60
+        puts "Manual Model Setup Required"
+        puts "="*60
+        puts "\nPlease manually add the following methods to your #{model_class} model:"
+        puts "\nFile: app/models/#{model_class.underscore}.rb"
+        puts "\nAdd this inside your #{model_class} class:"
+        puts "\n" + generate_model_methods(model_class)
+        puts "\n" + "="*60
+      end
 
       def update_initializer_with_model(model_class)
         initializer_path = "config/initializers/referral_box.rb"

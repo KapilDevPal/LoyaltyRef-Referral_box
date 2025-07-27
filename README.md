@@ -1,5 +1,7 @@
 # ReferralBox 📦
 
+![ReferralBox Logo](logo.png)
+
 A flexible Ruby gem for building loyalty and referral systems in Rails apps.
 
 * 🎁 Reward users with points based on their activity
