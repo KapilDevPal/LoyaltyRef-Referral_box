@@ -23,10 +23,11 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_runtime_dependency "rails", "~> 6.0", ">= 6.0.0"
-  spec.add_runtime_dependency "activerecord", "~> 6.0", ">= 6.0.0"
-  spec.add_runtime_dependency "actionview", "~> 6.0", ">= 6.0.0"
-  spec.add_runtime_dependency "actionpack", "~> 6.0", ">= 6.0.0"
+  # Allow Rails 6.0 and any future version >= 6.0
+  spec.add_runtime_dependency "rails", ">= 6.0"
+  spec.add_runtime_dependency "activerecord", ">= 6.0"
+  spec.add_runtime_dependency "actionview", ">= 6.0"
+  spec.add_runtime_dependency "actionpack", ">= 6.0"
   spec.add_runtime_dependency "kaminari", "~> 1.2"
 
   spec.add_development_dependency "rspec-rails", "~> 5.0"
@@ -34,4 +35,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pry-byebug", "~> 3.9"
   spec.add_development_dependency "rubocop", "~> 1.0"
   spec.add_development_dependency "rubocop-rails", "~> 2.0"
-end 
+end

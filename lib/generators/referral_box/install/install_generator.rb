@@ -79,7 +79,7 @@ module ReferralBox
         <<~MIGRATION
           # frozen_string_literal: true
 
-          class AddReferralBoxTo#{model_class.pluralize} < ActiveRecord::Migration[#{Rails.version.split('.').first}]
+          class AddReferralBoxTo#{model_class.pluralize} < ActiveRecord::Migration[#{get_rails_version}]
             def change
               add_column :#{model_class.underscore.pluralize}, :referral_code, :string
               add_column :#{model_class.underscore.pluralize}, :tier, :string
@@ -89,6 +89,12 @@ module ReferralBox
             end
           end
         MIGRATION
+      end
+
+      def get_rails_version
+        # Get the major and minor version (e.g., "8.0" instead of just "8")
+        major, minor = Rails.version.split('.')[0..1]
+        "#{major}.#{minor}"
       end
 
       def generate_model_methods(model_class)
