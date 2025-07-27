@@ -1,6 +1,7 @@
 # ReferralBox 📦
 
-![ReferralBox Logo](logo.png)
+![ChatGPT Image Jul 27, 2025, 05_45_46 PM](https://github.com/user-attachments/assets/5124228a-068d-4a41-a9ac-3e0c35739afc)
+
 
 A flexible Ruby gem for building loyalty and referral systems in Rails apps.
 
