@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.2] - 2025-01-XX
+
+### Fixed
+- **Migration Issue**: Fixed NOT NULL constraint error by making referrer_id nullable
+- **Generator Improvements**: Removed interactive prompts, now reads configuration from initializer
+- **Model Flexibility**: Generator automatically detects and uses the configured model class name
+- **Migration Generation**: Creates proper migrations with correct table names and constraints
+
+### Changed
+- Generator no longer asks questions - uses `reference_class_name` from initializer
+- Migration adds `null: true` to referrer_id to prevent constraint violations
+- Added unique index on referral_code column
+
 ## [0.1.1] - 2025-01-XX
 
 ### Fixed
