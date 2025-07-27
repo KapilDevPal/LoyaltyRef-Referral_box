@@ -10,13 +10,13 @@ Gem::Specification.new do |spec|
 
   spec.summary = "A flexible Ruby gem for building loyalty and referral systems in Rails apps"
   spec.description = "Add loyalty points, dynamic tier levels, and referral rewards to any Rails application with ease. Features include customizable earning rules, unique referral codes, built-in analytics, and an admin dashboard."
-  spec.homepage = "https://github.com/KapilDevPal/ReferralBox"
+  spec.homepage = "https://github.com/KapilDevPal/referral_box"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 2.7.0"
 
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "https://github.com/KapilDevPal/ReferralBox"
-  spec.metadata["changelog_uri"] = "https://github.com/KapilDevPal/ReferralBox/blob/main/CHANGELOG.md"
+  spec.metadata["source_code_uri"] = "https://github.com/KapilDevPal/referral_box"
+  spec.metadata["changelog_uri"] = "https://github.com/KapilDevPal/referral_box/blob/main/CHANGELOG.md"
   spec.metadata["rubygems_mfa_required"] = "true"
 
   spec.files = Dir.glob("{app,config,db,lib}/**/*") + %w[README.md LICENSE.txt CHANGELOG.md]
