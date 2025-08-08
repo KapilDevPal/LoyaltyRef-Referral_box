@@ -1,4 +1,8 @@
 # ReferralBox 📦
+**PLEASE VISIT THIS**
+GEM BEEN Updated 
+https://github.com/KapilDevPal/Referral_box
+
 
 A flexible Ruby gem for building loyalty and referral systems in Rails apps.
 
