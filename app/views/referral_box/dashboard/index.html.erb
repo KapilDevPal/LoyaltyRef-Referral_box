@@ -1,0 +1,98 @@
+<div class="card">
+  <h2>📊 Dashboard Overview</h2>
+  
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-number"><%= @total_users %></div>
+      <div class="stat-label">Total Users</div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-number"><%= @total_transactions %></div>
+      <div class="stat-label">Total Transactions</div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-number"><%= @total_referrals %></div>
+      <div class="stat-label">Total Referrals</div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-number"><%= number_to_percentage(@conversion_rate, precision: 1) %></div>
+      <div class="stat-label">Conversion Rate</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>🔄 Recent Transactions</h2>
+  
+  <% if @recent_transactions.any? %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Type</th>
+          <th>Points</th>
+          <th>Description</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @recent_transactions.each do |transaction| %>
+          <tr>
+            <td><%= transaction.user&.email || transaction.user&.name || "Unknown" %></td>
+            <td>
+              <span class="badge <%= transaction.transaction_type %>">
+                <%= transaction.transaction_type.titleize %>
+              </span>
+            </td>
+            <td><%= transaction.points %></td>
+            <td><%= transaction.description %></td>
+            <td><%= transaction.created_at.strftime("%b %d, %Y") %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>No transactions yet.</p>
+  <% end %>
+</div>
+
+<div class="card">
+  <h2>🏆 Top Users by Points</h2>
+  
+  <% if @top_users.any? %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Points</th>
+          <th>Tier</th>
+          <th>Referrals</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @top_users.each do |user| %>
+          <tr>
+            <td>
+              <%= link_to user.email || user.name || "Unknown", referral_box.user_path(user), class: "btn btn-primary" %>
+            </td>
+            <td><%= ReferralBox.balance(user) %></td>
+            <td>
+              <% tier = ReferralBox.tier(user) %>
+              <% if tier %>
+                <span class="badge <%= tier.downcase %>"><%= tier %></span>
+              <% else %>
+                <span class="badge">None</span>
+              <% end %>
+            </td>
+            <td><%= user.referrals.count %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>No users with points yet.</p>
+  <% end %>
+</div> 

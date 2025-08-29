@@ -1,0 +1,99 @@
+<div class="card">
+  <h2>📈 Referral Analytics</h2>
+  
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-number"><%= @total_clicks %></div>
+      <div class="stat-label">Total Clicks</div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-number"><%= @total_conversions %></div>
+      <div class="stat-label">Total Conversions</div>
+    </div>
+    
+    <div class="stat-card">
+      <div class="stat-number"><%= number_to_percentage(@conversion_rate, precision: 1) %></div>
+      <div class="stat-label">Conversion Rate</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>📱 Device Breakdown</h2>
+  
+  <% if @referrals_by_device.any? %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Device Type</th>
+          <th>Count</th>
+          <th>Percentage</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @referrals_by_device.each do |device, count| %>
+          <tr>
+            <td><%= device.titleize %></td>
+            <td><%= count %></td>
+            <td><%= number_to_percentage((count.to_f / @total_clicks) * 100, precision: 1) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>No device data available.</p>
+  <% end %>
+</div>
+
+<div class="card">
+  <h2>🌐 Browser Breakdown</h2>
+  
+  <% if @referrals_by_browser.any? %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Browser</th>
+          <th>Count</th>
+          <th>Percentage</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @referrals_by_browser.each do |browser, count| %>
+          <tr>
+            <td><%= browser %></td>
+            <td><%= count %></td>
+            <td><%= number_to_percentage((count.to_f / @total_clicks) * 100, precision: 1) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>No browser data available.</p>
+  <% end %>
+</div>
+
+<div class="card">
+  <h2>📅 Daily Click Trends (Last 30 Days)</h2>
+  
+  <% if @daily_clicks.any? %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Clicks</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @daily_clicks.each do |date, count| %>
+          <tr>
+            <td><%= Date.parse(date).strftime("%b %d, %Y") %></td>
+            <td><%= count %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>No daily click data available.</p>
+  <% end %>
+</div> 

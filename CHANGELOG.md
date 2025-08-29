@@ -7,6 +7,80 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.9] - 2025-01-XX
+
+### Added
+- **Logo**: Added ReferralBox logo to the gem and README
+- **Better Model Injection**: Improved generator to handle different model inheritance patterns
+- **Manual Instructions**: Clear instructions when automatic model injection fails
+
+### Fixed
+- **Generator Issues**: Fixed "File unchanged" error by improving model method injection logic
+- **Model Detection**: Better handling of models that inherit from different base classes
+- **User Experience**: Clearer error messages and manual setup instructions
+
+## [0.1.8] - 2025-01-XX
+
+### Added
+- **Interactive Generator**: Generator now asks for model name and confirms the choice
+- **Model Detection**: Automatically detects existing models in the app
+- **Safe Migrations**: Migration now checks if columns exist before adding them
+- **Duplicate Prevention**: Prevents adding duplicate columns and methods
+
+### Fixed
+- **Migration Errors**: Fixed "duplicate column name" errors by adding existence checks
+- **Generator Flow**: Improved user experience with interactive prompts
+- **Model Flexibility**: Better support for different model names (User, Customer, Account, etc.)
+
+## [0.1.7] - 2025-01-XX
+
+### Added
+- **Admin Dashboard Views**: Added all missing view templates for the admin dashboard
+- **Dashboard Index**: Overview with statistics, recent transactions, and top users
+- **Users List**: Complete user management with points, tiers, and referral codes
+- **User Details**: Individual user profiles with transaction history
+- **Transactions**: Full transaction history with filtering and pagination
+- **Referrals**: Referral tracking with device and browser analytics
+- **Analytics**: Comprehensive analytics with device breakdown and daily trends
+
+### Fixed
+- **Missing Templates**: Resolved "ActionController::MissingExactTemplate" error
+- **Dashboard Navigation**: All dashboard sections now have proper views
+
+## [0.1.5] - 2025-01-XX
+
+### Fixed
+- **Dynamic Migration Versioning**: Generator now creates migrations with correct Rails version format for any Rails version
+- **Gemspec Dependencies**: Fixed Rails dependency constraints to use proper version format
+- **Migration Compatibility**: Ensured all migrations work with Rails 6.0 through Rails 8.x
+
+### Improved
+- **Version Detection**: Enhanced Rails version detection in generator
+- **Cross-Version Support**: Better support for different Rails versions
+
+## [0.1.4] - 2025-01-XX
+
+## [0.1.3] - 2025-01-XX
+
+## [0.1.2] - 2025-01-XX
+
+### Fixed
+- **Migration Issue**: Fixed NOT NULL constraint error by making referrer_id nullable
+- **Generator Improvements**: Removed interactive prompts, now reads configuration from initializer
+- **Model Flexibility**: Generator automatically detects and uses the configured model class name
+- **Migration Generation**: Creates proper migrations with correct table names and constraints
+
+### Changed
+- Generator no longer asks questions - uses `reference_class_name` from initializer
+- Migration adds `null: true` to referrer_id to prevent constraint violations
+- Added unique index on referral_code column
+
+## [0.1.1] - 2025-01-XX
+
+### Fixed
+- Rails compatibility: Updated dependencies to support Rails 8.x and newer versions
+- Removed restrictive version constraints on Rails, ActiveRecord, ActionView, and ActionPack
+
 ## [0.1.0] - 2025-01-XX
 
 ### Added

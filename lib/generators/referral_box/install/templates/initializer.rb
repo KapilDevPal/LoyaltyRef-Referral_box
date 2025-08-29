@@ -2,7 +2,8 @@
 
 ReferralBox.configure do |config|
   # Define which model represents your app's user/customer
-  config.reference_class_name = 'User' # or 'Customer', 'Account', etc.
+  # Change this to match your model: 'User', 'Customer', 'Account', 'Member', etc.
+  config.reference_class_name = 'User'
 
   # Custom earning rule - earn points based on events
   config.earning_rule = ->(user, event) do

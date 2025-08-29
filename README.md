@@ -4,6 +4,9 @@ GEM BEEN Updated
 https://github.com/KapilDevPal/Referral_box
 
 
+![ChatGPT Image Jul 27, 2025, 05_45_46 PM](https://github.com/user-attachments/assets/5124228a-068d-4a41-a9ac-3e0c35739afc)
+
+
 A flexible Ruby gem for building loyalty and referral systems in Rails apps.
 
 * 🎁 Reward users with points based on their activity
@@ -149,26 +152,6 @@ end
 * Social sharing for referral links
 
 ---
-
-## 📂 Folder Structure (Gem)
-
-```
-lib/
-├── referral_box.rb
-├── referral_box/
-│   ├── engine.rb
-│   ├── configuration.rb
-│   ├── version.rb
-│   ├── models/
-│   │   ├── transaction.rb
-│   │   ├── referral_log.rb
-│   └── controllers/
-│       ├── dashboard_controller.rb
-app/views/referral_box/dashboard/
-  ├── index.html.erb
-  ├── show.html.erb
-```
-
 ---
 
 ## 🧪 Usage Examples
@@ -195,4 +178,4 @@ PRs are welcome 🙌 — help improve the gem or suggest features.
 
 ## 📜 License
 
-MIT © 2025 Kapil Pal 
+MIT © 2025 Kapil Dev Pal(Rails To Rescue) 

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "bundler/setup"
-require "loyalty_ref"
+require "referral_box"
 require "rspec/rails"
 
 RSpec.configure do |config|

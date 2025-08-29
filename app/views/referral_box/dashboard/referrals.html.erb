@@ -1,0 +1,62 @@
+<div class="card">
+  <h2>🤝 Referral Tracking</h2>
+  
+  <% if @referrals.any? %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Referral Code</th>
+          <th>Clicked At</th>
+          <th>Device</th>
+          <th>Browser</th>
+          <th>IP Address</th>
+          <th>Status</th>
+          <th>Signed Up</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @referrals.each do |referral| %>
+          <tr>
+            <td>
+              <code><%= referral.referral_code %></code>
+            </td>
+            <td><%= referral.clicked_at.strftime("%b %d, %Y at %I:%M") %></td>
+            <td>
+              <% if referral.device_type.present? %>
+                <span class="badge"><%= referral.device_type.titleize %></span>
+              <% else %>
+                <span class="text-muted">Unknown</span>
+              <% end %>
+            </td>
+            <td>
+              <% if referral.browser.present? %>
+                <%= referral.browser %>
+              <% else %>
+                <span class="text-muted">Unknown</span>
+              <% end %>
+            </td>
+            <td><%= referral.ip_address %></td>
+            <td>
+              <% if referral.converted? %>
+                <span class="badge earn">Converted</span>
+              <% else %>
+                <span class="badge">Clicked</span>
+              <% end %>
+            </td>
+            <td>
+              <% if referral.signed_up_at %>
+                <%= referral.signed_up_at.strftime("%b %d, %Y") %>
+              <% else %>
+                <span class="text-muted">Not signed up</span>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    
+    <%= referral_box_paginate(@referrals) %>
+  <% else %>
+    <p>No referral tracking data found.</p>
+  <% end %>
+</div> 
